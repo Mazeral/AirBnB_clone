@@ -4,10 +4,19 @@ import datetime
 
 class BaseClass:
     """The BaseClass for everyclass in this project"""
-    def __init__(self, arg):
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.datetime.now()
-        self.updated_at = datetime.datetime.now()
+    def __init__(self, *args, **kwargs):
+        """Init function of the class"""
+        if len(kwargs) != 0:
+            for key, value in kwargs:
+                if key is not 'class':
+                    setattr(self, key, value)
+                    if key == 'created_at' or 'updated_at':
+                        setattr(self, key, datetime.strptime
+                                (datetime_str, '%Y-%m-%dT%H:%M:%S.%f'))
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.datetime.now()
+            self.updated_at = datetime.datetime.now()
 
     def __str__(self):
         print("[{}] [{}] {}".format("BaseClass", self.id, self.__dict__))
