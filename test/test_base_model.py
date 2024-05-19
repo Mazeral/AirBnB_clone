@@ -33,13 +33,18 @@ class TestBaseClass(unittest.TestCase):
         self.assertIsInstance(model_dict, dict)
         self.assertEqual(model_dict['__class__'], 'BaseModel')
         self.assertEqual(model_dict['id'], model.id)
-        self.assertEqual(model_dict['created_at'], model.created_at.isoformat())
-        self.assertEqual(model_dict['updated_at'], model.updated_at.isoformat())
+        self.assertEqual(model_dict['created_at'],
+                         model.created_at.isoformat())
+        self.assertEqual(model_dict['updated_at'],
+                         model.updated_at.isoformat())
         self.assertIn('__class__', model_dict)
         self.assertEqual(model_dict['id'], model.id)
-        self.assertEqual(model_dict['created_at'], model.created_at.isoformat())
-        self.assertEqual(model_dict['updated_at'], model.updated_at.isoformat())
+        self.assertEqual(model_dict['created_at'],
+                         model.created_at.isoformat())
+        self.assertEqual(model_dict['updated_at'],
+                         model.updated_at.isoformat())
         self.assertIn('__class__', model_dict)
+
 
 if __name__ == '__main__':
     unittest.main()

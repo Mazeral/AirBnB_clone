@@ -7,14 +7,14 @@ import datetime
 
 class HBNBCommand(cmd.Cmd):
     date_format = "%Y-%m-%dT%H:%M:%S.%f"
-    classList = ["BaseModel"]
+    classList = ["BaseModel", "User"]
     attributes = ["created_at", "updated_at", "id"]
     prompt = "(hbnb)"
 
     def do_quit(self, arg):
         """Quits the program"""
         return True
-    
+
     def EOF(self, arg):
         """Quits the program"""
         return True
@@ -35,19 +35,15 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         classname = arg.strip()
-        if not classname:
+        if not arg:
             print("** class name missing **")
             return
-        if hasattr(models, arg):
-            cls = getattr(models, classname)
-            if isinstance(cls, type):
-                new_instance = cls()
-                new_instance.save()
-                print(new_instance.id)
-            else:
-                print("** class doesn't exist **")
-        else:
+        if arg not in storage.classes():
             print("** class doesn't exist **")
+            return
+        new_instance = storage.classes()[arg]()
+        new_instance.save()
+        print(new_instance.id)
 
     def do_show(self, arg):
         argument = argprocess(arg)
@@ -62,10 +58,10 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         instance = search_instance_by_id(details.class_id)
-        if instance is None:
+        if instance not in storage.all():
             print("** no instance found **")
-        else:
-            return str(instance)
+            return
+        print(storage.all()[instance])
 
     def do_destroy(self, arg):
         argument = argprocess(arg)
@@ -83,15 +79,8 @@ class HBNBCommand(cmd.Cmd):
         if instance is None:
             print("** no instance found **")
         else:
-            with open("models/engine/file.json", 'r') as f:
-                data = load.json(f)
-                if data[details.class_id]:
-                    del data[details.class_id]
-                with open('models/engine/file.json', 'w') as f:
-                    json.dump(data, f, indent=4)
-                else:
-                    print("** no instance found **")
-                    return
+            del storage.all()[instance]
+            storage.save()
 
     def do_all(self, arg):
         argument = argprocess(arg)
@@ -105,7 +94,7 @@ class HBNBCommand(cmd.Cmd):
                 filtered_instances.append(instance)
         print([str(instance) for instance in filtered_instances])
 
-    def do_update(self, arg)
+    def do_update(self, arg):
         argument = argprocess(arg)
         if len(argument) == 0:
             print("** class name missing **")
@@ -120,8 +109,8 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
             return
         # If everything is here:
-        details = {class_name: argument[0], class_id: argument[1], attribute: argument[2]
-                   , attribute_val: argument[3]}
+        details = {class_name: argument[0], class_id: argument[1],
+                   attribute: argument[2], attribute_val: argument[3]}
         if details.class_name not in classList:
             print("** class doesn't exist **")
             return
@@ -139,12 +128,11 @@ class HBNBCommand(cmd.Cmd):
         setattr(instance, attribute_name, attribute_value)
         instance.save()
 
-
     def argprocess(sentence):
         words = sentence.split()
         stripped_words = [word.strip() for word in words]
         return stripped_words
-    
+
     def is_valid_uuid(id_string):
         try:
             uuid.UUID(id_string)
@@ -157,7 +145,7 @@ class HBNBCommand(cmd.Cmd):
         with open('file.json', 'r') as file:
             # Load the JSON data
             data = json.load(file)
-            
+
             # Check if the instance ID exists in the JSON data
             if instance_id in data:
                 # Retrieve the details of the instance based on its ID
@@ -166,6 +154,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 # Return None if the instance ID is not found
                 return None
+
 
 if __name__ == "__main__":
     HBNBCommand.cmdloop()
