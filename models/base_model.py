@@ -23,13 +23,58 @@ class BaseClass:
             storage.new()
 
     def __str__(self):
+        """Summary line.
+
+        Extended description of function.
+
+        Args:
+            param1 (int): Description of param1.
+            param2 (str): Description of param2.
+
+        Returns:
+            bool: Description of return value.
+
+        Raises:
+            ValueError: Description of ValueError.
+
+        """
         print("[{}] [{}] {}".format("BaseClass", self.id, self.__dict__))
 
     def save(self):
+        """Summary line.
+
+        Extended description of function.
+
+        Args:
+            param1 (int): Description of param1.
+            param2 (str): Description of param2.
+
+        Returns:
+            bool: Description of return value.
+
+        Raises:
+            ValueError: Description of ValueError.
+
+        """
         self.updated_at = datetime.datetime.now()
         storage.save()
 
     def to_dict(self):
+        """Summary line.
+
+        Extended description of function.
+
+        Args:
+            param1 (int): Description of param1.
+            param2 (str): Description of param2.
+
+        Returns:
+            bool: Description of return value.
+
+        Raises:
+            ValueError: Description of ValueError.
+
+        """
         instance_dict = {}
         for key, item in self.__dict__:
             if isinstance(item, datetime):

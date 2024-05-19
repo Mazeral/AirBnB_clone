@@ -5,6 +5,7 @@ import uuid
 
 
 class TestBaseClass(unittest.TestCase):
+    """Testing BaseClass functions"""
     def test_instance(self):
         """Tests if the instance is corrent"""
         model = BaseModel()
