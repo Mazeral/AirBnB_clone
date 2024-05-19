@@ -2,10 +2,13 @@
 import cmd
 import models
 import json
+import datetime
 
 
 class HBNBCommand(cmd.Cmd):
+    date_format = "%Y-%m-%dT%H:%M:%S.%f"
     classList = ["BaseModel"]
+    attributes = ["created_at", "updated_at", "id"]
     prompt = "(hbnb)"
 
     def do_quit(self, arg):
@@ -64,7 +67,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             return str(instance)
 
-    def do_destroy(self):
+    def do_destroy(self, arg):
         argument = argprocess(arg)
         details = {class_name: argument[0], class_id: argument[1]}
         if len(details) == 0:
@@ -84,39 +87,85 @@ class HBNBCommand(cmd.Cmd):
                 data = load.json(f)
                 if data[details.class_id]:
                     del data[details.class_id]
+                with open('models/engine/file.json', 'w') as f:
+                    json.dump(data, f, indent=4)
                 else:
                     print("** no instance found **")
                     return
 
-    def do_all(self):
-        pass
+    def do_all(self, arg):
+        argument = argprocess(arg)
+        if argument is not in classList:
+            print("** class doesn't exist **")
+            return
+        data = models.storage.all()
+        filtered_instances = []
+        for key, instances in data.items():
+            if not class_name or instance.__class__.__name__ == argument:
+                filtered_instances.append(instance)
+        print([str(instance) for instance in filtered_instances])
+
+    def do_update(self, arg)
+        argument = argprocess(arg)
+        if len(argument) == 0:
+            print("** class name missing **")
+            return
+        if len(argument) < 2:
+            print("** instance id missing **")
+            return
+        if len(argument) < 3:
+            print("** attribute name missing **")
+            return
+        if len(argument) < 4:
+            print("** value missing **")
+            return
+        # If everything is here:
+        details = {class_name: argument[0], class_id: argument[1], attribute: argument[2]
+                   , attribute_val: argument[3]}
+        if details.class_name not in classList:
+            print("** class doesn't exist **")
+            return
+        if details.id not in storage.all():
+            print("** no instance found **")
+            return
+        if attribute_value.isdigit():
+            attribute_value = int(attribute_value)
+        else:
+            try:
+                attribute_value = float(attribute_value)
+            except ValueError:
+                pass
+        instance = storage.all()[key]
+        setattr(instance, attribute_name, attribute_value)
+        instance.save()
+
 
     def argprocess(sentence):
         words = sentence.split()
         stripped_words = [word.strip() for word in words]
         return stripped_words
     
-def is_valid_uuid(id_string):
-    try:
-        uuid.UUID(id_string)
-        return True
-    except ValueError:
-        return False
+    def is_valid_uuid(id_string):
+        try:
+            uuid.UUID(id_string)
+            return True
+        except ValueError:
+            return False
 
-def search_instance_by_id(instance_id):
-    # Open the JSON file for reading
-    with open('file.json', 'r') as file:
-        # Load the JSON data
-        data = json.load(file)
-        
-        # Check if the instance ID exists in the JSON data
-        if instance_id in data:
-            # Retrieve the details of the instance based on its ID
-            instance_details = data[instance_id]
-            return instance_details
-        else:
-            # Return None if the instance ID is not found
-            return None
+    def search_instance_by_id(instance_id):
+        # Open the JSON file for reading
+        with open('file.json', 'r') as file:
+            # Load the JSON data
+            data = json.load(file)
+            
+            # Check if the instance ID exists in the JSON data
+            if instance_id in data:
+                # Retrieve the details of the instance based on its ID
+                instance_details = data[instance_id]
+                return instance_details
+            else:
+                # Return None if the instance ID is not found
+                return None
 
 if __name__ == "__main__":
     HBNBCommand.cmdloop()
