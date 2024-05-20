@@ -3,12 +3,19 @@ import cmd
 import models
 import json
 import datetime
+from models import Place, State, City, Amenity, Review
 
 
 class HBNBCommand(cmd.Cmd):
     """The console class where everything comes together"""
     date_format = "%Y-%m-%dT%H:%M:%S.%f"
-    classList = ["BaseModel", "User"]
+    classList = ["BaseModel",
+                 "User",
+                 "Place",
+                 "State",
+                 "City",
+                 "Amenity",
+                 "Review"]
     attributes = ["created_at", "updated_at", "id"]
     prompt = "(hbnb)"
 
@@ -111,13 +118,13 @@ class HBNBCommand(cmd.Cmd):
 
         """
         classname = arg.strip()
-        if not arg:
+        if not classname:
             print("** class name missing **")
             return
-        if arg not in storage.classes():
+        if classname not in storage.classes():
             print("** class doesn't exist **")
             return
-        new_instance = storage.classes()[arg]()
+        new_instance = storage.classes()[classname]()
         new_instance.save()
         print(new_instance.id)
 
@@ -145,7 +152,7 @@ class HBNBCommand(cmd.Cmd):
         if not details.class_id:
             print("** instance id missing")
             return
-        if details.class_name is not in classList:
+        if details.class_name not in classList:
             print("** class doesn't exist **")
             return
         instance = search_instance_by_id(details.class_id)
@@ -178,7 +185,7 @@ class HBNBCommand(cmd.Cmd):
         if not details.class_id:
             print("** instance id missing")
             return
-        if details.class_name is not in classList:
+        if details.class_name not in classList:
             print("** class doesn't exist **")
             return
         instance = search_instance_by_id(details.class_id)
@@ -205,7 +212,7 @@ class HBNBCommand(cmd.Cmd):
 
         """
         argument = argprocess(arg)
-        if argument is not in classList:
+        if argument not in classList:
             print("** class doesn't exist **")
             return
         data = models.storage.all()

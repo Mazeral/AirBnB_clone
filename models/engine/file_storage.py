@@ -2,6 +2,11 @@
 import json
 import os
 from models.user import User
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
 
 
 class FileStorage:
@@ -20,7 +25,13 @@ class FileStorage:
         Returns:
             Nothing
         """
-        self.classes = {"BaseModel": BaseModel, "User": User}
+        self.classes = {"BaseModel": BaseModel,
+                        "User": User,
+                        "Place": Place,
+                        "City": City,
+                        "Review": Review,
+                        "State": State,
+                        "Amenity": Amenity}
 
     def all(self):
         """Return all things in the file.json
@@ -97,6 +108,8 @@ class FileStorage:
         if os.path.exists(self.__file_path):
             with open(self.__file_path, 'r') as f:
                 obj_dict = json.loads(f.read())
-                for value in obj_dict:
+                for key, value in obj_dict.items():
                     cls = value["__class__"]
-                    self.new(eval(cls)(**value))
+                    cls = self.classes.get(cls_name)
+                    if cls:
+                        self.new(eval(cls)(**value))
