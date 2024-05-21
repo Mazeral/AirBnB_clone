@@ -52,7 +52,7 @@ class BaseClass:
             ValueError: Description of ValueError.
 
         """
-        print("[{}] [{}] {}".format("BaseClass", self.id, self.__dict__))
+        print("[{}] [{}] {}".format(self.__class__.name, self.id, self.__dict__))
 
     def save(self):
         """Summary line.
@@ -70,7 +70,7 @@ class BaseClass:
             ValueError: Description of ValueError.
 
         """
-        self.updated_at = datetime.datetime.now()
+        self.updated_at = datetime.utcnow()
         storage.save()
 
     def to_dict(self):
@@ -90,8 +90,8 @@ class BaseClass:
 
         """
         instance_dict = {}
-        for key, item in self.__dict__:
-            if isinstance(item, datetime):
+        for key, item in self.__dict__.items():
+            if key in ("created_at", "updated_at"):
                 instance_dict[key] = item.isoformat()
             else:
                 instance_dict[key] = item
