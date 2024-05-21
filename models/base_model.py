@@ -4,6 +4,7 @@ from datetime import datetime
 import models
 
 
+DATE_FORMAT = '%Y-%m-%dT%H:%M:%S.%f'
 class BaseModel:
     """The BaseClass for everyclass in this project
     
@@ -18,7 +19,6 @@ class BaseModel:
         to_dict(self): returns the dictionary values of instances obj
 
     """
-    DATE_FORMAT = '%Y-%m-%dT%H:%M:%S.%f'
     def __init__(self, *args, **kwargs):
         """Init function of the class"""
         if len(kwargs) != 0:
