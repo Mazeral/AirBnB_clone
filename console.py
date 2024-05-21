@@ -5,17 +5,59 @@ import json
 import datetime
 import models
 
+def argprocess(sentence):
+    """Summary line.
+
+    Extended description of function.
+
+    Args:
+        param1 (int): Description of param1.
+        param2 (str): Description of param2.
+
+    Returns:
+        bool: Description of return value.
+
+    Raises:
+        ValueError: Description of ValueError.
+
+    """
+    words = sentence.split()
+    stripped_words = [word.strip() for word in words]
+    return stripped_words
+
+def is_valid_uuid(id_string):
+    """Summary line.
+
+    Extended description of function.
+
+    Args:
+        param1 (int): Description of param1.
+        param2 (str): Description of param2.
+
+    Returns:
+        bool: Description of return value.
+
+    Raises:
+        ValueError: Description of ValueError.
+
+    """
+    try:
+        uuid.UUID(id_string)
+        return True
+    except ValueError:
+        return False
+
+date_format = "%Y-%m-%dT%H:%M:%S.%f"
+classList = ["BaseModel",
+             "User",
+             "Place",
+             "State",
+             "City",
+             "Amenity",
+             "Review"]
 
 class HBNBCommand(cmd.Cmd):
     """The console class where everything comes together"""
-    date_format = "%Y-%m-%dT%H:%M:%S.%f"
-    classList = ["BaseModel",
-                 "User",
-                 "Place",
-                 "State",
-                 "City",
-                 "Amenity",
-                 "Review"]
     attributes = ["created_at", "updated_at", "id"]
     prompt = "(hbnb) "
 
@@ -46,7 +88,6 @@ class HBNBCommand(cmd.Cmd):
         pass
 
 
-
     def do_create(self, arg):
         """Summary line.
 
@@ -74,6 +115,7 @@ class HBNBCommand(cmd.Cmd):
         new_instance.save()
         print(new_instance.id)
 
+
     def do_show(self, arg):
         """Summary line.
 
@@ -91,7 +133,10 @@ class HBNBCommand(cmd.Cmd):
 
         """
         argument = argprocess(arg)
-        details = {class_name: argument[0], class_id: argument[1]}
+        if len(argument) == 0:
+            details = {}
+        else:
+            details = {"class_name": argument[0], "class_id": argument[1]}
         if len(details) == 0:
             print("** class name missing **")
             return
@@ -106,6 +151,7 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
             return
         print(storage.all()[instance])
+
 
     def do_destroy(self, arg):
         """Summary line.
@@ -140,6 +186,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             del storage.all()[instance]
             storage.save()
+
 
     def do_all(self, arg):
         """Summary line.
@@ -217,47 +264,6 @@ class HBNBCommand(cmd.Cmd):
         setattr(instance, attribute_name, attribute_value)
         instance.save()
 
-    def argprocess(sentence):
-        """Summary line.
-
-        Extended description of function.
-
-        Args:
-            param1 (int): Description of param1.
-            param2 (str): Description of param2.
-
-        Returns:
-            bool: Description of return value.
-
-        Raises:
-            ValueError: Description of ValueError.
-
-        """
-        words = sentence.split()
-        stripped_words = [word.strip() for word in words]
-        return stripped_words
-
-    def is_valid_uuid(id_string):
-        """Summary line.
-
-        Extended description of function.
-
-        Args:
-            param1 (int): Description of param1.
-            param2 (str): Description of param2.
-
-        Returns:
-            bool: Description of return value.
-
-        Raises:
-            ValueError: Description of ValueError.
-
-        """
-        try:
-            uuid.UUID(id_string)
-            return True
-        except ValueError:
-            return False
 
     def search_instance_by_id(instance_id):
         """Summary line.
