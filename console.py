@@ -4,7 +4,9 @@ import models
 import json
 import datetime
 import models
-
+"""
+a console for AirBNB project
+"""
 
 def argprocess(sentence):
     """Summary line.
