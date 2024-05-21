@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import uuid
 import datetime
-from models import storage
+import models
 
 
 class BaseClass:
@@ -34,7 +34,7 @@ class BaseClass:
             self.created_at = datetime.utcnow()
             self.updated_at = datetime.utcnow()
         if self.created_at == self.updated_at:
-            storage.new()
+            models.storage.new()
 
     def __str__(self):
         """Summary line.
