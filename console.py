@@ -1,9 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 import cmd
 import models
 import json
 import datetime
 from models import Place, State, City, Amenity, Review
+import models
 
 
 class HBNBCommand(cmd.Cmd):

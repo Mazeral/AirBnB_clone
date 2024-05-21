@@ -1,10 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 import uuid
-import datetime
+from datetime import datetime
 import models
 
 
-class BaseClass:
+class BaseModel:
     """The BaseClass for everyclass in this project
     
     Attributes:
@@ -33,8 +33,7 @@ class BaseClass:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.utcnow()
             self.updated_at = datetime.utcnow()
-        if self.created_at == self.updated_at:
-            models.storage.new()
+            models.storage.new(self)
 
     def __str__(self):
         """Summary line.
@@ -52,7 +51,7 @@ class BaseClass:
             ValueError: Description of ValueError.
 
         """
-        print("[{}] [{}] {}".format(self.__class__.name, self.id, self.__dict__))
+        return "[{}] [{}] {}".format(self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
         """Summary line.

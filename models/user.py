@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-from models import BaseModel
+#!/usr/bin/python3
+from models.base_model import BaseModel
 
 
 class User(BaseModel):
