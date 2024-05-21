@@ -23,7 +23,7 @@ class HBNBCommand(cmd.Cmd):
         """Quits the program"""
         return True
 
-    def EOF(self, arg):
+    def do_EOF(self, arg):
         """Quits the program"""
         return True
 
@@ -45,61 +45,7 @@ class HBNBCommand(cmd.Cmd):
         """
         pass
 
-    def help_quit(self):
-        """Summary line.
 
-        Extended description of function.
-
-        Args:
-            param1 (int): Description of param1.
-            param2 (str): Description of param2.
-
-        Returns:
-            bool: Description of return value.
-
-        Raises:
-            ValueError: Description of ValueError.
-
-        """
-        print("Quit command to exist the program")
-
-    def help_EOF(self):
-        """Summary line.
-
-        Extended description of function.
-
-        Args:
-            param1 (int): Description of param1.
-            param2 (str): Description of param2.
-
-        Returns:
-            bool: Description of return value.
-
-        Raises:
-            ValueError: Description of ValueError.
-
-        """
-        print("Quits the program with sending EOF message")
-
-    def do_help(self, arg):
-        """Summary line.
-
-        Extended description of function.
-
-        Args:
-            param1 (int): Description of param1.
-            param2 (str): Description of param2.
-
-        Returns:
-            bool: Description of return value.
-
-        Raises:
-            ValueError: Description of ValueError.
-
-        """
-        print("Documented commands (type help <topic>):\n\
-                ========================================\n\
-                EOF help quit")
 
     def do_create(self, arg):
         """Summary line.
