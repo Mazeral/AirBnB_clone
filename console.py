@@ -31,6 +31,7 @@ def argprocess(sentence):
     stripped_words = [word.strip() for word in words]
     return stripped_words
 
+
 def is_valid_uuid(id_string):
     """Summary line.
 
@@ -53,6 +54,7 @@ def is_valid_uuid(id_string):
     except ValueError:
         return False
 
+
 date_format = "%Y-%m-%dT%H:%M:%S.%f"
 classList = ["BaseModel",
              "User",
@@ -61,6 +63,7 @@ classList = ["BaseModel",
              "City",
              "Amenity",
              "Review"]
+
 
 class HBNBCommand(cmd.Cmd):
     """The console class where everything comes together"""
@@ -93,7 +96,6 @@ class HBNBCommand(cmd.Cmd):
         """
         pass
 
-
     def do_create(self, arg):
         """Summary line.
 
@@ -121,7 +123,6 @@ class HBNBCommand(cmd.Cmd):
         new_instance.save()
         print(new_instance.id)
 
-
     def do_show(self, arg):
         """Summary line.
 
@@ -142,7 +143,7 @@ class HBNBCommand(cmd.Cmd):
         if len(argument) == 0:
             details = {}
         elif len(argument) == 1:
-            details = {"class_name": argument[0], "class_id" : None}
+            details = {"class_name": argument[0], "class_id": None}
         else:
             details = {"class_name": argument[0], "class_id": argument[1]}
         if len(details) == 0:
@@ -159,7 +160,6 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
             return
         print(models.storage.all()[instance])
-
 
     def do_destroy(self, arg):
         """Summary line.
@@ -181,7 +181,7 @@ class HBNBCommand(cmd.Cmd):
         if len(argument) == 0:
             details = {}
         elif len(argument) == 1:
-            details = {"class_name" : argument[0], "class_id" : None}
+            details = {"class_name": argument[0], "class_id": None}
         else:
             details = {"class_name": argument[0], "class_id": argument[1]}
         if len(details) == 0:
@@ -199,7 +199,6 @@ class HBNBCommand(cmd.Cmd):
         else:
             del models.storage.all()[instance]
             models.storage.save()
-
 
     def do_all(self, arg):
         """Summary line.
@@ -282,7 +281,6 @@ class HBNBCommand(cmd.Cmd):
         setattr(instance, attribute_name, attribute_value)
         instance.save()
 
-
     def search_instance_by_id(self, instance_id):
         """Summary line.
 
@@ -312,10 +310,11 @@ class HBNBCommand(cmd.Cmd):
             else:
                 # Return None if the instance ID is not found
                 return None
-            
+
     def is_sublist(self, smaller, larger):
         """A function to check if a list is a a part of a bigger list"""
         return all(item in larger for item in smaller)
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

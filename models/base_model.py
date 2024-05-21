@@ -5,9 +5,11 @@ import models
 
 
 DATE_FORMAT = '%Y-%m-%dT%H:%M:%S.%f'
+
+
 class BaseModel:
     """The BaseClass for everyclass in this project
-    
+
     Attributes:
         id: The id of the instance
         created_at: The creation date
@@ -51,7 +53,8 @@ class BaseModel:
             ValueError: Description of ValueError.
 
         """
-        return "[{}] [{}] {}".format(self.__class__.__name__, self.id, self.__dict__)
+        return "[{}] [{}] {}".format(self.__class__.__name__,
+                                     self.id, self.__dict__)
 
     def save(self):
         """Summary line.
