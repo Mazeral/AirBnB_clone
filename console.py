@@ -114,10 +114,10 @@ class HBNBCommand(cmd.Cmd):
         if not classname:
             print("** class name missing **")
             return
-        if classname not in storage.classes():
+        if classname not in models.storage.classes:
             print("** class doesn't exist **")
             return
-        new_instance = storage.classes()[classname]()
+        new_instance = models.storage.classes[classname]()
         new_instance.save()
         print(new_instance.id)
 
@@ -141,22 +141,24 @@ class HBNBCommand(cmd.Cmd):
         argument = argprocess(arg)
         if len(argument) == 0:
             details = {}
+        elif len(argument) == 1:
+            details = {"class_name": argument[0], "class_id" : None}
         else:
             details = {"class_name": argument[0], "class_id": argument[1]}
         if len(details) == 0:
             print("** class name missing **")
             return
-        if not details.class_id:
-            print("** instance id missing")
+        if details["class_id"] is None:
+            print("** instance id missing **")
             return
-        if details.class_name not in classList:
+        if details["class_name"] not in classList:
             print("** class doesn't exist **")
             return
-        instance = search_instance_by_id(details.class_id)
-        if instance not in storage.all():
+        instance = self.search_instance_by_id(details["class_id"])
+        if instance not in models.storage.all():
             print("** no instance found **")
             return
-        print(storage.all()[instance])
+        print(models.storage.all()[instance])
 
 
     def do_destroy(self, arg):
@@ -211,13 +213,14 @@ class HBNBCommand(cmd.Cmd):
 
         """
         argument = argprocess(arg)
-        if argument not in classList:
+        if not self.is_sublist(argument, classList):
+            print(classList)
             print("** class doesn't exist **")
             return
         data = models.storage.all()
         filtered_instances = []
-        for key, instances in data.items():
-            if not class_name or instance.__class__.__name__ == argument:
+        for key, instance in data.items():
+            if not argument[0] or instance.__class__.__name__ == argument[0]:
                 filtered_instances.append(instance)
         print([str(instance) for instance in filtered_instances])
 
@@ -271,7 +274,7 @@ class HBNBCommand(cmd.Cmd):
         instance.save()
 
 
-    def search_instance_by_id(instance_id):
+    def search_instance_by_id(self, instance_id):
         """Summary line.
 
         Extended description of function.
@@ -300,7 +303,10 @@ class HBNBCommand(cmd.Cmd):
             else:
                 # Return None if the instance ID is not found
                 return None
-
+            
+    def is_sublist(self, smaller, larger):
+        """A function to check if a list is a a part of a bigger list"""
+        return all(item in larger for item in smaller)
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
