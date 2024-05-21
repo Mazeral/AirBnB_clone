@@ -1,12 +1,15 @@
 #!/usr/bin/python3
+""" Defines the console class
+which is the entry point of the Airbnb Project
+"""
+
+
 import cmd
 import models
 import json
 import datetime
 import models
-"""
-a console for AirBNB project
-"""
+
 
 def argprocess(sentence):
     """Summary line.
