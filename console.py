@@ -155,7 +155,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         instance = self.search_instance_by_id(details["class_id"])
-        if instance not in models.storage.all():
+        if instance not in models.storage.all().items():
             print("** no instance found **")
             return
         print(models.storage.all()[instance])
@@ -178,7 +178,12 @@ class HBNBCommand(cmd.Cmd):
 
         """
         argument = argprocess(arg)
-        details = {class_name: argument[0], class_id: argument[1]}
+        if len(argument) == 0:
+            details = {}
+        elif len(argument) == 1:
+            details = {"class_name" : argument[0], "class_id" : None}
+        else:
+            details = {"class_name": argument[0], "class_id": argument[1]}
         if len(details) == 0:
             print("** class name missing **")
             return
