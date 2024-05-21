@@ -3,7 +3,6 @@ import cmd
 import models
 import json
 import datetime
-from models import Place, State, City, Amenity, Review
 import models
 
 
@@ -346,4 +345,4 @@ class HBNBCommand(cmd.Cmd):
 
 
 if __name__ == "__main__":
-    HBNBCommand.cmdloop()
+    HBNBCommand().cmdloop()
