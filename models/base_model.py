@@ -18,15 +18,17 @@ class BaseClass:
         to_dict(self): returns the dictionary values of instances obj
 
     """
+    DATE_FORMAT = '%Y-%m-%dT%H:%M:%S.%f'
     def __init__(self, *args, **kwargs):
         """Init function of the class"""
         if len(kwargs) != 0:
             for key, value in kwargs.items():
-                if key is not 'class':
-                    setattr(self, key, value)
-                    if key == 'created_at' or 'updated_at':
-                        setattr(self, key, datetime.strptime
-                                (datetime_str, '%Y-%m-%dT%H:%M:%S.%f'))
+                if key in ("updated_at", "created_at"):
+                    self.__dict__[key] = datetime.strptime(value, DATE_FORMAT)
+                elif key[0] == "id":
+                    self.__dict__[key] = str(value)
+                else:
+                    self.__dict__[key] = value
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.utcnow()
