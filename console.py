@@ -17,7 +17,7 @@ class HBNBCommand(cmd.Cmd):
                  "Amenity",
                  "Review"]
     attributes = ["created_at", "updated_at", "id"]
-    prompt = "(hbnb)"
+    prompt = "(hbnb) "
 
     def do_quit(self, arg):
         """Quits the program"""
