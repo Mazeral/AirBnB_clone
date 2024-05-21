@@ -187,18 +187,18 @@ class HBNBCommand(cmd.Cmd):
         if len(details) == 0:
             print("** class name missing **")
             return
-        if not details.class_id:
+        if not details["class_id"]:
             print("** instance id missing")
             return
-        if details.class_name not in classList:
+        if details["class_name"] not in classList:
             print("** class doesn't exist **")
             return
-        instance = search_instance_by_id(details.class_id)
+        instance = search_instance_by_id(details["class_id"])
         if instance is None:
             print("** no instance found **")
         else:
-            del storage.all()[instance]
-            storage.save()
+            del models.storage.all()[instance]
+            models.storage.save()
 
 
     def do_all(self, arg):
@@ -218,6 +218,10 @@ class HBNBCommand(cmd.Cmd):
 
         """
         argument = argprocess(arg)
+        if len(argument) == 0:
+            data = models.storage.all()
+            print([str(instance) for instance in data])
+            return
         if not self.is_sublist(argument, classList):
             print(classList)
             print("** class doesn't exist **")
